@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="<% settings.charset %>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Perl GraphQL Dancer2 Demo</title>
+    <style>
+      body {
+        margin: 10;
+        background-color: #ddd;
+        font-family: "Lucida Grande", "Bitstream Vera Sans", "Verdana";
+        font-size: 13px;
+        color: #333;
+      }
+    </style>
+
+    <!-- Grab jQuery from a CDN, fall back to local if necessary -->
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">/* <![CDATA[ */
+      !window.jQuery && document.write('<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"><\/script>')
+    /* ]]> */</script>
+
+    <script>
+      $(document).ready(
+          function() {
+              $("#city").change(
+                  function() {
+                      var city = $("#city").val();
+                      $.ajax({
+                          type:        'POST',
+                          url:         '/',
+                          dataType:    'json',
+                          contentType: 'application/json; charset=utf-8',
+                          data:        JSON.stringify({"query": {"city":city}}),
+                          success:     function(data, status) {
+                                           alert("Data: " + data + "\nStatus: " + status);
+                                       },
+                      });
+                  }
+              );
+          }
+      );
+    </script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="content">
+        <h1>Perl GraphQL Dancer2 Demo App</h1>
+        <p>This demonstrates use of GraphQL.pm in a Dancer2 app.</p>
+    
+        <div id="form-container">
+          <form id="graphql_form">
+            <select id="city" class="city" name="city">
+              <option value="">Select a city</option>
+              <option value="Lagos">Africa: Lagos</option>
+              <option value="McMurdo Station">Antarctica: McMurdo Station</option>
+              <option value="上海 (Shanghai)">Asia: 上海 (Shanghai)</option>
+              <option value="Sydney">Australasia: Sydney</option>
+              <option value="London">Europe: London</option>
+              <option value="México, D.F.">North America: México, D.F.</option>
+              <option value="São Paulo">South America: São Paulo</option>
+            </select>
+          </form>
+        </div>
+      </div>
+      <div id="footer">
+        <small><small>Powered by <a href="http://perldancer.org/">Dancer2</a> <% dancer_version %></small></small>
+      </div>
+    </div> 
+  </body>
+</html>

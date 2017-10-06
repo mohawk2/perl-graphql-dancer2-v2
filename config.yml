@@ -1,0 +1,8 @@
+appname:    DemoApp
+charset:    UTF-8
+template:   simple
+log:        debug
+logger:     console
+plugins:
+    Ajax:
+        content_type: application/json
