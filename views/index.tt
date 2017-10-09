@@ -28,12 +28,15 @@
                       var continent = $("#continent").val();
                       $.ajax({
                           type:        'POST',
-                          url:         '/',
+                          url:         '/graphql',
                           dataType:    'json',
                           contentType: 'application/json; charset=utf-8',
-                          data:        JSON.stringify({"continent":continent}),
+                          data:        JSON.stringify({
+                              query: 'query q($name: String!) { continent(name: $name) { majorCity qualities } }',
+                              variables: { name: continent },
+                          }),
                           success:     function(data, status) {
-                                           alert("Data: " + data + "\nStatus: " + status);
+                                           alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
                                        },
                       });
                   }
