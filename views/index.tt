@@ -28,7 +28,7 @@
                       var continent = $("#continent").val();
                       $.ajax({
                           type:        'POST',
-                          url:         '/',
+                          url:         '/graphql',
                           dataType:    'json',
                           contentType: 'application/json; charset=utf-8',
                           data:        JSON.stringify({"continent":continent}),

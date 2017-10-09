@@ -16,7 +16,6 @@ my $schema = GraphQL::Schema->new(
                 type => $String,
                 resolve => sub {
                     my ( undef, $args ) = @_;
-                    warn "A " . Dumper $args;
                     return get_city( $args->{'continent'});
                 },
             },
@@ -32,7 +31,7 @@ get '/' => sub {
 
 my $JSON = JSON::MaybeXS->new->allow_nonref;
 
-ajax '/' => sub {
+ajax '/graphql' => sub {
     return GraphQL::Execution->execute(
         $schema,
         request->body,
