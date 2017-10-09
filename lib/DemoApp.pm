@@ -2,7 +2,6 @@ package DemoApp;
 use strict; use warnings; use Data::Dumper;
 
 use Dancer2;
-use Dancer2::Plugin::Ajax;
 use GraphQL::Schema;
 use GraphQL::Type::Object;
 use GraphQL::Type::Scalar qw/ $String /;
@@ -31,7 +30,7 @@ get '/' => sub {
 
 my $JSON = JSON::MaybeXS->new->allow_nonref;
 
-ajax '/graphql' => sub {
+post '/graphql' => sub {
     return GraphQL::Execution->execute(
         $schema,
         request->body,
