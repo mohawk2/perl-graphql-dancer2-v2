@@ -12,18 +12,17 @@ my $schema = GraphQL::Schema->new(
     query => GraphQL::Type::Object->new(
         name => 'QueryRoot',
         fields => {
-            city => {
+            continent => {
                 type => $String,
                 resolve => sub {
                     my ( undef, $args ) = @_;
-                    return get_coordinates( $args->{'city'});
+                    warn "A " . Dumper $args;
+                    return get_city( $args->{'continent'});
                 },
             },
         },
     ),
 );
-
-my $JSON = JSON::MaybeXS->new->allow_nonref;
 
 get '/' => sub {
     template 'index', {
@@ -31,11 +30,12 @@ get '/' => sub {
     };
 };
 
+my $JSON = JSON::MaybeXS->new->allow_nonref;
+
 ajax '/' => sub {
-    my $json = $JSON->decode(request->body);
     return GraphQL::Execution->execute(
         $schema,
-        $json->{'query'}->{'city'},
+        request->body,
         undef,
         undef,
         undef,
@@ -43,7 +43,7 @@ ajax '/' => sub {
     );
 };
 
-sub get_coordinates { return 'unimplemented' };
+sub get_city { return 'unimplemented' };
 
 1; # return true
 

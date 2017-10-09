@@ -23,15 +23,15 @@
     <script>
       $(document).ready(
           function() {
-              $("#city").change(
+              $("#continent").change(
                   function() {
-                      var city = $("#city").val();
+                      var continent = $("#continent").val();
                       $.ajax({
                           type:        'POST',
                           url:         '/',
                           dataType:    'json',
                           contentType: 'application/json; charset=utf-8',
-                          data:        JSON.stringify({"query": {"city":city}}),
+                          data:        JSON.stringify({"continent":continent}),
                           success:     function(data, status) {
                                            alert("Data: " + data + "\nStatus: " + status);
                                        },
@@ -50,15 +50,15 @@
     
         <div id="form-container">
           <form id="graphql_form">
-            <select id="city" class="city" name="city">
-              <option value="">Select a city</option>
-              <option value="Lagos">Africa: Lagos</option>
-              <option value="McMurdo Station">Antarctica: McMurdo Station</option>
-              <option value="上海 (Shanghai)">Asia: 上海 (Shanghai)</option>
-              <option value="Sydney">Australasia: Sydney</option>
-              <option value="London">Europe: London</option>
-              <option value="México, D.F.">North America: México, D.F.</option>
-              <option value="São Paulo">South America: São Paulo</option>
+            <select id="continent" class="continent" name="continent">
+              <option value="">Select a continent</option>
+              <option value="Africa">Africa</option>
+              <option value="Antarctica">Antarctica</option>
+              <option value="Asia">Asia</option>
+              <option value="Australasia">Australasia</option>
+              <option value="Europe">Europe</option>
+              <option value="North America">North America</option>
+              <option value="South America">South America</option>
             </select>
           </form>
         </div>
