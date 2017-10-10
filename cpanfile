@@ -1,4 +1,5 @@
 requires 'Dancer2';
+requires 'Dancer2::Plugin::GraphQL';
 requires 'GraphQL';
 
 on test => sub {

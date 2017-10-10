@@ -2,14 +2,15 @@ package DemoApp;
 use strict; use warnings; use Data::Dumper;
 
 use Dancer2;
+use Dancer2::Plugin::GraphQL;
 use GraphQL::Schema;
 use GraphQL::Type::Object;
 use GraphQL::Type::Scalar qw/ $String /;
-use GraphQL::Execution;
 
 set serializer => 'JSON';
 set charset    => 'UTF-8';
 set template   => 'simple';
+set plugins => { 'GraphQL' => { graphiql => 1 } }; # equivalent of config file
 
 my $fakedb = {
     "Africa" => { majorCity => "Lagos" },
@@ -26,10 +27,6 @@ my $Continent = GraphQL::Type::Object->new(
     fields => {
         majorCity => {
             type => $String,
-            resolve => sub {
-                my ( $source ) = @_;
-                return $source->{majorCity};
-            },
         },
         qualities => {
             type => $String,
@@ -44,7 +41,7 @@ my $schema = GraphQL::Schema->new(
         fields => {
             continent => {
                 type => $Continent,
-                args => { name => { type => $String } },
+                args => { name => { type => $String->non_null } },
                 resolve => sub {
                     my ( $source, $args ) = @_;
                     return $source->{$args->{name}};
@@ -60,20 +57,6 @@ get '/' => sub {
     };
 };
 
-my $JSON = JSON::MaybeXS->new->allow_nonref;
-
-post '/graphql' => sub {
-    return GraphQL::Execution->execute(
-        $schema,
-        body_parameters->{'query'},
-        $fakedb,
-        undef,
-        body_parameters->{'variables'},
-        undef,
-        undef,
-    );
-};
+graphql '/graphql' => $schema, $fakedb;
 
 1;
-
-__END__

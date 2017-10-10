@@ -16,20 +16,14 @@ my $test = Plack::Test->create( $app );
 }
 
 {
-    my $response = $test->request( GET '/graphiql' );
-    is $response->code, 200,                                            'Got a 200 response code from "/graphiql"';
-    like $response->decoded_content, qr/React.createElement\(GraphiQL/, 'Content as expected';
-}
-
-{
     my $json = JSON::MaybeXS->new->allow_nonref;
     my $response = $test->request(
-        POST '/graphiql',
-        content => $json->encode({ query => '{helloWorld}' }),
+        POST '/graphql',
+        content => $json->encode({ query => '{ continent(name:"Africa") { majorCity } }' }),
     );
-    is $response->code, 200,                                            'Got a 200 response code from POSTing the schema';
+    is $response->code, 200,                                            'Got a 200 response code from graphql query';
     is_deeply eval { $json->decode( $response->decoded_content ) },
-              { 'data' => { 'helloWorld' => 'Hello, world!' } },        'Content as expected';
+    { data => { continent => { majorCity => "Lagos" } } },        'Content as expected';
 }
 
 
