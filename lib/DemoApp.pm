@@ -27,10 +27,6 @@ my $Continent = GraphQL::Type::Object->new(
     fields => {
         majorCity => {
             type => $String,
-            resolve => sub {
-                my ( $source ) = @_;
-                return $source->{majorCity};
-            },
         },
         qualities => {
             type => $String,
